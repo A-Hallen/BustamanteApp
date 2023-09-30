@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_productos">
+
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.bustamante.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_mypimes"
+        android:name="com.example.bustamante.ui.mypimes.MypimesFragment"
+        android:label="@string/menu_mypimes"
+        tools:layout="@layout/fragment_mypimes" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.bustamante.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_productos"
+        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
+        android:label="@string/menu_productos"
+        tools:layout="@layout/fragment_tcps" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.bustamante.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_tcps"
+        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
+        android:label="@string/menu_tcps"
+        tools:layout="@layout/fragment_tcps" />
 </navigation>
