@@ -54,7 +54,7 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
             binding.tipo.text = item.tipo
 
             binding.downloadBtn.visibility =
-                if (item.informacion == null) View.GONE else View.VISIBLE
+                if (item.informacion.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             configInformation(binding, item.informacion)
 
