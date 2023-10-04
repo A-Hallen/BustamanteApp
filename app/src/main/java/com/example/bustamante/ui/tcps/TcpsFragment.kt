@@ -4,39 +4,49 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.bustamante.databinding.FragmentTcpsBinding
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bustamante.data.model.Proveedor
+import com.example.bustamante.databinding.FragmentProductosBinding
+import com.example.bustamante.ui.recyclers.adapters.TcpAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TcpsFragment : Fragment() {
-
-    private var _binding: FragmentTcpsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private val proveedorViewModel: ProveedorViewModel by activityViewModels()
+    private val adapter by lazy { TcpAdapter() }
+    private lateinit var binding: FragmentProductosBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this)[TcpsViewModel::class.java]
-
-        _binding = FragmentTcpsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        binding = FragmentProductosBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getObservableList(arguments).observe(viewLifecycleOwner) {
+            adapter.update(it)
+        }
+        setupRecyclerView()
+        proveedorViewModel.getProveedores()
+    }
+
+    private fun getObservableList(arguments: Bundle?): MutableLiveData<List<Proveedor>> {
+        return if (arguments?.getString("tipo") == "TCP") {
+            proveedorViewModel.tcpList
+        } else proveedorViewModel.mypimeList
+    }
+
+    private fun setupRecyclerView() {
+        val layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
     }
 }

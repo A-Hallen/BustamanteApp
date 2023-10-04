@@ -4,39 +4,50 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.bustamante.databinding.FragmentProductosBinding
+import com.example.bustamante.ui.recyclers.adapters.ProductAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class ProductosFragment : Fragment() {
-
-    private var _binding: FragmentProductosBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private val productosViewModel: ProductosViewModel by activityViewModels()
+    private lateinit var adapter: ProductAdapter
+    private lateinit var binding: FragmentProductosBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[ProductosViewModel::class.java]
+        binding = FragmentProductosBinding.inflate(inflater, container, false)
+        //viewModel.getProductos()
+        return binding.root
+    }
 
-        _binding = FragmentProductosBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        productosViewModel.productosList.observe(viewLifecycleOwner) {
+            adapter.update(it)
         }
-        return root
+        productosViewModel.getProductos()
+        setupRecyclerView()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupRecyclerView() {
+        adapter = ProductAdapter()
+        // Removes blinks
+        // Removes blinks
+        (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        val layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
     }
+
 }

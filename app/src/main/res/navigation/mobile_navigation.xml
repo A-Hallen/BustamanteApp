@@ -8,19 +8,29 @@
 
     <fragment
         android:id="@+id/nav_mypimes"
-        android:name="com.example.bustamante.ui.mypimes.MypimesFragment"
+        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
         android:label="@string/menu_mypimes"
-        tools:layout="@layout/fragment_mypimes" />
+        tools:layout="@layout/fragment_mypimes">
+        <argument
+            android:name="tipo"
+            app:argType="string"
+            android:defaultValue="MYPIME" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_productos"
-        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
+        android:name="com.example.bustamante.ui.productos.ProductosFragment"
         android:label="@string/menu_productos"
-        tools:layout="@layout/fragment_tcps" />
+        tools:layout="@layout/fragment_productos" />
 
     <fragment
         android:id="@+id/nav_tcps"
         android:name="com.example.bustamante.ui.tcps.TcpsFragment"
         android:label="@string/menu_tcps"
-        tools:layout="@layout/fragment_tcps" />
+        tools:layout="@layout/fragment_tcps">
+        <argument
+            android:name="tipo"
+            app:argType="string"
+            android:defaultValue="TCP" />
+    </fragment>
 </navigation>
