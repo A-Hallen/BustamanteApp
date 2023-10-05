@@ -7,6 +7,22 @@
 
 
     <fragment
+        android:id="@+id/product_full_size"
+        android:label="full size"
+        android:name="com.example.bustamante.ui.productos.ProductFullSizeFragment"
+        tools:layout="@layout/fragment_proveedor_full_size" />
+
+    <fragment
+        android:id="@+id/proveedor_full_size"
+        android:label="full size"
+        android:name="com.example.bustamante.ui.tcps.ProveedorFullSizeFragment"
+        tools:layout="@layout/fragment_proveedor_full_size">
+        <action
+            android:id="@+id/action_proveedor_full_size_to_product_full_size"
+            app:destination="@id/product_full_size" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_mypimes"
         android:name="com.example.bustamante.ui.tcps.TcpsFragment"
         android:label="@string/menu_mypimes"
@@ -21,7 +37,11 @@
         android:id="@+id/nav_productos"
         android:name="com.example.bustamante.ui.productos.ProductosFragment"
         android:label="@string/menu_productos"
-        tools:layout="@layout/fragment_productos" />
+        tools:layout="@layout/fragment_product_full_size">
+        <action
+            android:id="@+id/action_nav_productos_to_product_full_size"
+            app:destination="@id/product_full_size" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tcps"
@@ -32,5 +52,8 @@
             android:name="tipo"
             app:argType="string"
             android:defaultValue="TCP" />
+        <action
+            android:id="@+id/action_nav_tcps_to_proveedor_full_size"
+            app:destination="@id/proveedor_full_size" />
     </fragment>
 </navigation>

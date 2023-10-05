@@ -24,6 +24,10 @@ class ProductosViewModel @Inject constructor(
         }
     }
 
+    suspend fun getProductsFromProviderId(id: String): List<Product> {
+        return productosUseCase.getProductsFromProviderId(id)
+    }
+
 //    fun getProductosFromApi() {
 //        CoroutineScope(Dispatchers.IO).launch {
 //            val productos = productosUseCase.getAllProductsFromApi()

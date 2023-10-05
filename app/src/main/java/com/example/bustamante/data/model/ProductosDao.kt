@@ -16,4 +16,7 @@ interface ProductosDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProducts(map: List<ProductosEntity>)
+
+    @Query("SELECT * FROM PRODUCTOS_TABLE WHERE proveedor_id=:id")
+    suspend fun getProductsFromProviderId(id: String): List<ProductosEntity>
 }

@@ -11,11 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.bustamante.data.model.Product
 import com.example.bustamante.data.model.Proveedor
-import com.example.bustamante.data.model.ProveedorProductResponse
 import com.example.bustamante.databinding.ItemTcpBinding
 import com.example.bustamante.databinding.ProductImageViewBinding
 import com.example.bustamante.ui.recyclers.diffs.TcpDiffCallback
@@ -25,6 +26,7 @@ import java.io.File
 
 class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
     private var proveedoresList: List<Proveedor> = listOf()
+    private lateinit var cardClicked: (Proveedor, ConstraintLayout) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TcpViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -57,6 +59,7 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
                 if (item.informacion.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             configInformation(binding, item.informacion)
+            configCard(binding, item)
 
             val visibility = if (item.productos == null) View.GONE else View.VISIBLE
             binding.images.visibility = visibility
@@ -69,6 +72,12 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
             val estiloNegrita = StyleSpan(Typeface.BOLD)
             spannableString.setSpan(estiloNegrita, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.productList.text = spannableString
+        }
+    }
+
+    private fun configCard(binding: ItemTcpBinding, item: Proveedor) {
+        binding.card.setOnClickListener {
+            cardClicked(item, binding.card)
         }
     }
 
@@ -91,7 +100,7 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
     }
 
     private fun agregaImagenes(
-        productos: List<ProveedorProductResponse>,
+        productos: List<Product>,
         linearLayout: LinearLayout
     ) {
         val inflater = LayoutInflater.from(linearLayout.context)
@@ -106,6 +115,10 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
                 .placeholder(ColorDrawable(Color.parseColor(color)))
                 .into(imageView)
         }
+    }
+
+    fun setCardClicked(cardClicked: (Proveedor, ConstraintLayout) -> Unit) {
+        this.cardClicked = cardClicked
     }
 
 }

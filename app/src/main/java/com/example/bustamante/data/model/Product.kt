@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 data class Product(
-    val id: String,
+    val id: String = "",
     val cantidad: String,
     val categoria: String,
     val color: String,
@@ -14,8 +14,8 @@ data class Product(
     val precio: String,
     val proveedorId: String,
     val tabla: Map<String, String>?,
-    val nombreProveedor: String,
-    val tipoProveedor: String,
+    val nombreProveedor: String = "",
+    val tipoProveedor: String = "",
 ) {
     // Convertir la lista de pares a String
     fun datosToString(): String {

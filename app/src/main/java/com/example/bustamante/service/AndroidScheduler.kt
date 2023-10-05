@@ -16,6 +16,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URL
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -125,48 +126,54 @@ class AndroidScheduler : JobService() {
 
         }
 
-        private suspend fun updateProductos() {
+        private suspend fun updateProductos(): Boolean {
             val hasToUpdate = productUseCase.hasToUpdate("productos")
             Logger.i("Hay que actualizar los productos: $hasToUpdate")
-            if (hasToUpdate != true) return
+            if (hasToUpdate != true) return false
             val productos = productUseCase.getAllProductsFromApi()
             productos.map {
-                it.imagen = storeFileAndGetPath(it.imagen, "imagenes") ?: return
+                it.imagen = storeFileAndGetPath(it.imagen, "imagenes") ?: return false
             }
-            if (productos.isEmpty()) return
+            if (productos.isEmpty()) return false
             productUseCase.insertProducts(productos)
-            val intent = Intent("jobservice.to.activity.update")
-            intent.putExtra("clave", "productos")
-            sendBroadcast(intent)
+            return true
         }
 
-        private suspend fun updateProveedores() {
+        private suspend fun updateProveedores(): Boolean {
             Logger.i("My job scheduler")
             val hasToUpdate = productUseCase.hasToUpdate("proveedores")
             Logger.i("Hay que actualizar los proveedores: $hasToUpdate")
-            if (hasToUpdate != true) return
+            if (hasToUpdate != true) return false
             val proveedores = proveedorUseCase.getAllProveedorFromApi()
             val newProveedores: List<Proveedor> = proveedores.map { proveedor ->
                 proveedor.productos?.map {
-                    it.imagen = storeFileAndGetPath(it.imagen, "imagenes") ?: ""
+                    it.imagen = storeFileAndGetPath(it.imagen, "imagenes") ?: return false
                 }
 
                 val newInformation: Map<String, String>? = proveedor.informacion?.map {
-                    val path = storeFileAndGetPath(it.value, "documentos") ?: ""
+                    val path = storeFileAndGetPath(it.value, "documentos") ?: return false
                     Pair(it.key, path)
                 }?.toMap()
 
                 proveedor.copy(informacion = newInformation)
             }
             proveedorUseCase.insertProveedores(newProveedores)
-            val intent = Intent("jobservice.to.activity.update")
-            intent.putExtra("clave", "proveedores")
-            sendBroadcast(intent)
+
+            return true
         }
 
         private suspend fun run() {
-            updateProductos()
-            updateProveedores()
+            val intent = Intent("jobservice.to.activity.update")
+            if (updateProductos()) {
+                intent.putExtra("clave", "productos")
+                sendBroadcast(intent)
+                productUseCase.insertUpdateTime(Date())
+            }
+            if (updateProveedores()) {
+                intent.putExtra("clave", "proveedores")
+                sendBroadcast(intent)
+                proveedorUseCase.insertUpdateTime(Date())
+            }
             endJob()
         }
     }

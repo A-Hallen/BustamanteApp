@@ -18,14 +18,13 @@ class ProveedorUseCase @Inject constructor(
 
     suspend fun insertProveedores(proveedores: List<Proveedor>) {
         proveedorDao.insertProveedores(proveedores.map { it.toDataBase() })
-        insertUpdateTime(Date())
     }
 
     suspend fun getAllProveedores(): List<Proveedor> =
         proveedorDao.getAllProveedores().map { it.toDomain() }
 
 
-    private fun insertUpdateTime(date: Date) {
+    suspend fun insertUpdateTime(date: Date) {
         val entity = DateEntity("proveedores", date)
         dateDao.insert(entity)
     }

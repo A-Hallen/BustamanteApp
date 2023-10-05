@@ -15,5 +15,6 @@
     <color name="soft_white2">#f0f2f5</color>
     <color name="soft_white3">#e4e6eb</color>
     <color name="mid_gray">#E1E1E1</color>
+    <color name="mid_gray1">#A5A5A5</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

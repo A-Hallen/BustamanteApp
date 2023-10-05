@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +21,7 @@ import java.io.File
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     private var products: List<Product> = listOf()
+    private lateinit var cardClicked: (Product, ConstraintLayout) -> Unit
 
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
@@ -36,6 +37,8 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
             binding.cantidad.text = item.cantidad
             binding.proveedor.text = item.nombreProveedor
 
+            configCard(binding, item)
+
 
             binding.tableList.visibility = View.GONE
             if (item.tabla.isNullOrEmpty()) {
@@ -45,7 +48,6 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
                 return
             }
 
-            val colorBlanco = ContextCompat.getColor(binding.root.context, R.color.white)
             binding.precio.visibility = View.GONE
             binding.textPrecios.visibility = View.VISIBLE
             binding.textPrecios.setOnClickListener {
@@ -58,6 +60,12 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
                 addTableData(item.tabla, binding.tableList)
                 binding.tableList.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun configCard(binding: ItemProductBinding, item: Product) {
+        binding.card.setOnClickListener {
+            cardClicked(item, binding.card)
         }
     }
 
@@ -148,5 +156,9 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
         val diffResult = DiffUtil.calculateDiff(productDiffCallback)
         products = it
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun setCardClicked(cardClicked: (Product, ConstraintLayout) -> Unit) {
+        this.cardClicked = cardClicked
     }
 }

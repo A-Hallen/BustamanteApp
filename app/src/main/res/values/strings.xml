@@ -13,4 +13,6 @@
     <string name="producto">Producto</string>
     <string name="mostrar_precios">Mostrar Precios</string>
     <string name="download">download</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

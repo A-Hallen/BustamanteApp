@@ -7,7 +7,7 @@ data class Proveedor(
     val informacion: Map<String, String>?,
     val nombre: String,
     val tipo: String,
-    val productos: List<ProveedorProductResponse>?
+    val productos: List<Product>?
 )
 
 fun Proveedor.informacionToDatabase(): String {

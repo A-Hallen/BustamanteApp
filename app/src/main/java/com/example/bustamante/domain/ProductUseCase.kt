@@ -34,10 +34,9 @@ class ProductUseCase @Inject constructor(
 
     suspend fun insertProducts(productos: List<Product>) {
         productosDao.insertProducts(productos.map { it.toDataBase() })
-        insertUpdateTime(Date())
     }
 
-    private fun insertUpdateTime(date: Date) {
+    suspend fun insertUpdateTime(date: Date) {
         val entity = DateEntity("productos", date)
         dateDao.insert(entity)
     }
@@ -50,4 +49,7 @@ class ProductUseCase @Inject constructor(
         Logger.i("localDate: $localDate, serverDate: $serverDate")
         return serverDate > localDate
     }
+
+    suspend fun getProductsFromProviderId(id: String): List<Product> =
+        productosDao.getProductsFromProviderId(id).map { it.toDomain() }
 }

@@ -20,10 +20,10 @@ fun ProveedorEntity.toDomain() = Proveedor(
     proveedorId, getInformacion(), nombre, tipo, getProductos()
 )
 
-private fun ProveedorEntity.getProductos(): List<ProveedorProductResponse> {
+private fun ProveedorEntity.getProductos(): List<Product> {
     // Convertir el String a lista de pares
     val gson = Gson()
-    val tipo = object : TypeToken<List<ProveedorProductResponse>>() {}.type
+    val tipo = object : TypeToken<List<Product>>() {}.type
     return gson.fromJson(productos, tipo)
 }
 
