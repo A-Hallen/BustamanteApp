@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.ImageView
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigator
@@ -15,7 +16,6 @@ import com.example.bustamante.R
 import com.example.bustamante.data.model.Product
 import com.example.bustamante.databinding.FragmentProductosBinding
 import com.example.bustamante.ui.recyclers.adapters.ProductAdapter
-import com.google.android.material.transition.Hold
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,12 +24,6 @@ class ProductosFragment : Fragment() {
     private val productosViewModel: ProductosViewModel by activityViewModels()
     private lateinit var adapter: ProductAdapter
     private lateinit var binding: FragmentProductosBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        exitTransition = Hold()
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,15 +41,19 @@ class ProductosFragment : Fragment() {
             adapter.update(it)
         }
         productosViewModel.getProductos()
+        postponeEnterTransition()
+        binding.recyclerView.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
         setupRecyclerView()
     }
 
-    private val cardClicked = fun(item: Product, card: ConstraintLayout) {
-        card.transitionName = "product_transition"
+    private val cardClicked = fun(item: Product, view: ImageView) {
+        view.transitionName = "product_transition"
         val extras = FragmentNavigator
             .Extras
             .Builder()
-            .addSharedElement(card, "product_transition")
+            .addSharedElement(view, "product_transition")
             .build()
 
         val bundle = Bundle()

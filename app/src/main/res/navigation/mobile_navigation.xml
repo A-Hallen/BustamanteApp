@@ -25,8 +25,7 @@
     <fragment
         android:id="@+id/nav_mypimes"
         android:name="com.example.bustamante.ui.tcps.TcpsFragment"
-        android:label="@string/menu_mypimes"
-        tools:layout="@layout/fragment_mypimes">
+        android:label="@string/menu_mypimes">
         <argument
             android:name="tipo"
             app:argType="string"
@@ -46,8 +45,7 @@
     <fragment
         android:id="@+id/nav_tcps"
         android:name="com.example.bustamante.ui.tcps.TcpsFragment"
-        android:label="@string/menu_tcps"
-        tools:layout="@layout/fragment_tcps">
+        android:label="@string/menu_tcps">
         <argument
             android:name="tipo"
             app:argType="string"

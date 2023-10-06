@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
+
+    <include layout="@layout/content_main" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Bustamante.AppBarOverlay">
+        app:elevation="0dp"
+        android:theme="@style/Theme.Bustamante.AppBarOverlay"
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_width="match_parent"
+            app:contentInsetStartWithNavigation="0dp"
+            app:titleMargin="0dp"
+            app:navigationIcon="@drawable/search"
+            app:title="@string/app_name"
+            app:menu="@menu/main"
+            android:layout_marginEnd="5dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.Bustamante.PopupOverlay" />
+
+        <!--        <com.google.android.material.search.SearchBar-->
+        <!--            android:id="@+id/toolbar"-->
+        <!--            android:contentDescription="@string/barra_de_b_squeda"-->
+        <!--            app:buttonGravity="center_vertical"-->
+        <!--            android:hint="@string/app_name"-->
+        <!--            app:navigationIcon="@drawable/search"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            app:popupTheme="@style/Theme.Bustamante.PopupOverlay"-->
+        <!--            android:layout_height="50dp" />-->
+
+        <!--        <com.google.android.material.search.SearchView-->
+        <!--            android:id="@+id/search_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            app:layout_anchor="@id/toolbar"></com.google.android.material.search.SearchView>-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,7 +21,7 @@ import java.io.File
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     private var products: List<Product> = listOf()
-    private lateinit var cardClicked: (Product, ConstraintLayout) -> Unit
+    private lateinit var cardClicked: (Product, ImageView) -> Unit
 
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
@@ -65,7 +65,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
 
     private fun configCard(binding: ItemProductBinding, item: Product) {
         binding.card.setOnClickListener {
-            cardClicked(item, binding.card)
+            cardClicked(item, binding.imagen)
         }
     }
 
@@ -158,7 +158,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun setCardClicked(cardClicked: (Product, ConstraintLayout) -> Unit) {
+    fun setCardClicked(cardClicked: (Product, ImageView) -> Unit) {
         this.cardClicked = cardClicked
     }
 }

@@ -9,9 +9,20 @@
         <item name="colorSecondary">@color/soft_white</item>
         <item name="colorSecondaryVariant">@color/mid_gray</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
+        <item name="colorOutline">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+
+    <style name="SearchViewStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Cambia el color del cursor a negro -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">

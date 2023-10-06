@@ -8,13 +8,13 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.ImageView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.bustamante.R
@@ -23,7 +23,7 @@ import com.example.bustamante.data.model.Proveedor
 import com.example.bustamante.databinding.FragmentProveedorFullSizeBinding
 import com.example.bustamante.domain.ProductUseCase
 import com.example.bustamante.ui.recyclers.adapters.ProductAdapter
-import com.example.bustamante.utils.ReadFIle
+import com.example.bustamante.ui.recyclers.adapters.ProductHeaderAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +42,7 @@ class ProveedorFullSizeFragment : Fragment() {
     private lateinit var binding: FragmentProveedorFullSizeBinding
     private var jsonItem: String? = null
     private lateinit var adapter: ProductAdapter
+    private lateinit var headerAdapter: ProductHeaderAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,45 +65,24 @@ class ProveedorFullSizeFragment : Fragment() {
         jsonItem ?: return
         val proveedor = Gson().fromJson(jsonItem, Proveedor::class.java)
         configViews(proveedor)
-        binding.tipo.setOnClickListener {
-            childFragmentManager.popBackStack()
-        }
     }
 
     private fun configViews(proveedor: Proveedor) {
         proveedor.productos ?: return
+        setupHeader(proveedor)
         setupRecyclerView(proveedor.proveedorId)
-        binding.tipo.text = proveedor.tipo
-        binding.nombre.text = proveedor.nombre
-        configDownloadBtn(proveedor)
     }
 
-    private fun configDownloadBtn(proveedor: Proveedor) {
-        if (proveedor.informacion.isNullOrEmpty()) return
-
-        binding.downloadBtn.visibility = View.VISIBLE
-        val keys = proveedor.informacion.keys.toList()
-
-        binding.downloadBtn.setOnClickListener {
-            val popupMenu = PopupMenu(binding.root.context, it)
-            keys.indices.map { index -> popupMenu.menu.add(0, index, index, keys[index]) }
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                val url = proveedor.informacion[menuItem.title]
-                url ?: return@setOnMenuItemClickListener false
-                ReadFIle().openDocument(binding.root.context, url)
-                true
-            }
-            popupMenu.show()
-        }
+    private fun setupHeader(proveedor: Proveedor) {
+        headerAdapter = ProductHeaderAdapter(proveedor)
     }
 
-    private val cardClicked = fun(item: Product, card: ConstraintLayout) {
-        card.transitionName = "product_transition"
+    private val cardClicked = fun(item: Product, view: ImageView) {
+        view.transitionName = "product_transition"
         val extras = FragmentNavigator
             .Extras
             .Builder()
-            .addSharedElement(card, "product_transition")
+            .addSharedElement(view, "product_transition")
             .build()
 
         val bundle = Bundle()
@@ -121,18 +101,19 @@ class ProveedorFullSizeFragment : Fragment() {
             val spannableString = SpannableString("Productos: $productNames")
             val estiloNegrita = StyleSpan(Typeface.BOLD)
             spannableString.setSpan(estiloNegrita, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            binding.productList.text = spannableString
-
+            headerAdapter.notifyItemChanged(0)
+            headerAdapter.setProductList(spannableString)
             adapter.update(it)
         }
 
         adapter = ProductAdapter()
         adapter.setCardClicked(cardClicked)
+        val concatAdapter = ConcatAdapter(headerAdapter, adapter)
         (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = concatAdapter
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.doOnPreDraw {
             startPostponedEnterTransition()
