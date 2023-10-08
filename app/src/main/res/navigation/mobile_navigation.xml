@@ -9,13 +9,13 @@
     <fragment
         android:id="@+id/product_full_size"
         android:label="full size"
-        android:name="com.example.bustamante.ui.productos.ProductFullSizeFragment"
+        android:name="com.hallen.bustamante.ui.productos.ProductFullSizeFragment"
         tools:layout="@layout/fragment_proveedor_full_size" />
 
     <fragment
         android:id="@+id/proveedor_full_size"
         android:label="full size"
-        android:name="com.example.bustamante.ui.tcps.ProveedorFullSizeFragment"
+        android:name="com.hallen.bustamante.ui.tcps.ProveedorFullSizeFragment"
         tools:layout="@layout/fragment_proveedor_full_size">
         <action
             android:id="@+id/action_proveedor_full_size_to_product_full_size"
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/nav_mypimes"
-        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
+        android:name="com.hallen.bustamante.ui.tcps.TcpsFragment"
         android:label="@string/menu_mypimes">
         <argument
             android:name="tipo"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/nav_productos"
-        android:name="com.example.bustamante.ui.productos.ProductosFragment"
+        android:name="com.hallen.bustamante.ui.productos.ProductosFragment"
         android:label="@string/menu_productos"
         tools:layout="@layout/fragment_product_full_size">
         <action
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/nav_tcps"
-        android:name="com.example.bustamante.ui.tcps.TcpsFragment"
+        android:name="com.hallen.bustamante.ui.tcps.TcpsFragment"
         android:label="@string/menu_tcps">
         <argument
             android:name="tipo"
