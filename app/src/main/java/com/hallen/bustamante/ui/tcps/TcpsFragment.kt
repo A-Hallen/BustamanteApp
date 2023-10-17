@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,12 +11,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.Hold
+import com.google.gson.Gson
 import com.hallen.bustamante.R
 import com.hallen.bustamante.data.model.Proveedor
 import com.hallen.bustamante.databinding.FragmentProductosBinding
 import com.hallen.bustamante.ui.recyclers.adapters.TcpAdapter
-import com.google.android.material.transition.Hold
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,7 +56,7 @@ class TcpsFragment : Fragment() {
         proveedorViewModel.getProveedores()
     }
 
-    private val cardClicked = fun(item: Proveedor, card: ConstraintLayout) {
+    private val cardClicked = fun(item: Proveedor, card: View) {
         card.transitionName = "proveedor_transition"
         val extras = FragmentNavigator
             .Extras

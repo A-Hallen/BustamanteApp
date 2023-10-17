@@ -39,12 +39,3 @@ private fun ProveedorEntity.getInformacion(): List<Information> {
 fun Proveedor.toDataBase() = ProveedorEntity(
     proveedorId, informacionToDatabase(), nombre, tipo, productosToDatabase()
 )
-
-
-//data class Proveedor(
-//    val proveedorId: String,
-//    val informacion: Map<String, String>,
-//    val nombre: String,
-//    val tipo: String,
-//    val productos: List<Map<String, String>>
-//)

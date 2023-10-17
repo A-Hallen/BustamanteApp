@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.gson.Gson
 import com.hallen.bustamante.R
 import com.hallen.bustamante.data.model.Product
 import com.hallen.bustamante.data.model.Proveedor
@@ -24,8 +26,6 @@ import com.hallen.bustamante.databinding.FragmentProveedorFullSizeBinding
 import com.hallen.bustamante.domain.ProductUseCase
 import com.hallen.bustamante.ui.recyclers.adapters.ProductAdapter
 import com.hallen.bustamante.ui.recyclers.adapters.ProductHeaderAdapter
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +100,12 @@ class ProveedorFullSizeFragment : Fragment() {
             val productNames: String = it.joinToString(", ") { product -> product.nombre }
             val spannableString = SpannableString("Productos: $productNames")
             val estiloNegrita = StyleSpan(Typeface.BOLD)
-            spannableString.setSpan(estiloNegrita, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(
+                estiloNegrita,
+                0,
+                "Productos: ".length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             headerAdapter.notifyItemChanged(0)
             headerAdapter.setProductList(spannableString)
             adapter.update(it)
@@ -126,3 +131,4 @@ class ProveedorFullSizeFragment : Fragment() {
     }
 
 }
+

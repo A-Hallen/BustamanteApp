@@ -17,4 +17,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="buscar">Buscar</string>
     <string name="barra_de_b_squeda">Barra de búsqueda</string>
+    <string name="permission_canceled">Sin el permiso de escritura no puedo guardar tus datos, reinicia la aplicacion y acepta los permisos</string>
 </resources>

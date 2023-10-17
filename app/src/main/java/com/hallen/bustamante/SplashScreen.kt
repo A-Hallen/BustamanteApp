@@ -11,8 +11,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val SPLAY_DELAY_MILLIS = 2000L // 2 seconds
+
 class SplashScreen : AppCompatActivity() {
-    private val splashDelay = 2000L // 2 segundos
     private lateinit var binding: SplashScreenLayoutBinding
 
     private val splashCoroutineScope = CoroutineScope(Dispatchers.Main)
@@ -24,14 +25,15 @@ class SplashScreen : AppCompatActivity() {
         Glide.with(this).load(R.drawable.logo_anim).into(binding.imageView)
 
         splashCoroutineScope.launch {
-            delay(splashDelay)
+            delay(SPLAY_DELAY_MILLIS)
             startActivity(Intent(this@SplashScreen, MainActivity::class.java))
             this@SplashScreen.finish()
         }
     }
 
     override fun onDestroy() {
-        splashCoroutineScope.cancel() // Cancelamos la corutina en caso de que la actividad sea destruida antes de los 2 segundos
+        // Cancelamos la corutina en caso de que la actividad sea destruida antes de los 2 segundos
+        splashCoroutineScope.cancel()
         super.onDestroy()
     }
 }

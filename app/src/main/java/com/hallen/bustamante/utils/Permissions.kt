@@ -8,8 +8,9 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+private const val REQUEST_PERMISSION = 1
+
 class Permissions(private val context: Context) {
-    private val PERMISSION_REQUEST = 1
 
     fun askStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -22,7 +23,7 @@ class Permissions(private val context: Context) {
                 ActivityCompat.requestPermissions(
                     context as Activity,
                     arrayOf(permission),
-                    PERMISSION_REQUEST
+                    REQUEST_PERMISSION
                 )
             }
         }

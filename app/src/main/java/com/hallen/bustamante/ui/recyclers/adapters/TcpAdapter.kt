@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,7 +25,7 @@ import java.io.File
 
 class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
     private var proveedoresList: List<Proveedor> = listOf()
-    private lateinit var cardClicked: (Proveedor, ConstraintLayout) -> Unit
+    private lateinit var cardClicked: (Proveedor, View) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TcpViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -70,7 +69,12 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
             val productNames: String = item.productos.joinToString(", ") { it.nombre }
             val spannableString = SpannableString("Productos: $productNames")
             val estiloNegrita = StyleSpan(Typeface.BOLD)
-            spannableString.setSpan(estiloNegrita, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(
+                estiloNegrita,
+                0,
+                "Productos: ".length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             binding.productList.text = spannableString
         }
     }
@@ -117,7 +121,7 @@ class TcpAdapter : RecyclerView.Adapter<TcpAdapter.TcpViewHolder>() {
         }
     }
 
-    fun setCardClicked(cardClicked: (Proveedor, ConstraintLayout) -> Unit) {
+    fun setCardClicked(cardClicked: (Proveedor, View) -> Unit) {
         this.cardClicked = cardClicked
     }
 

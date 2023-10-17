@@ -12,33 +12,26 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.hallen.bustamante.data.model.Product
-import com.hallen.bustamante.data.model.Proveedor
 import com.hallen.bustamante.databinding.ActivityMainBinding
 import com.hallen.bustamante.databinding.SerachViewBinding
 import com.hallen.bustamante.service.AndroidScheduler
 import com.hallen.bustamante.ui.productos.ProductosViewModel
 import com.hallen.bustamante.ui.tcps.ProveedorViewModel
 import com.hallen.bustamante.utils.Permissions
-import com.orhanobut.logger.Logger
+import com.hallen.bustamante.utils.SearchUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
+private const val JOB_ID = 123
+private const val MIN_JOB_INTERVAL: Long = 30 * 60 * 1000
+private const val MAX_JOB_INTERVAL: Long = 45 * 60 * 1000
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -73,14 +66,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         configNavBar()
-        askPermissions()
+        Permissions(this).askStoragePermissions()
         setupService()
     }
-
-    private fun askPermissions() {
-        Permissions(this).askStoragePermissions()
-    }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -90,13 +78,9 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(
-                    this,
-                    "Sin el permiso de escritura no puedo guardar tus datos, reinicia la aplicacion y acepta los permisos",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val message = getString(R.string.permission_canceled)
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            // Permiso concedido, puedes continuar con tu lógica
         }
     }
 
@@ -113,89 +97,15 @@ class MainActivity : AppCompatActivity() {
         val jobSheduler: JobScheduler =
             getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         val componentName = ComponentName(this, AndroidScheduler::class.java)
-        val builder = JobInfo.Builder(123, componentName)
+        val builder = JobInfo.Builder(JOB_ID, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
             .setPersisted(true)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            builder.setPeriodic(30 * 60 * 1000, 45 * 60 * 1000)
-        } else builder.setPeriodic(30 * 60 * 1000)
+            builder.setPeriodic(MIN_JOB_INTERVAL, MAX_JOB_INTERVAL)
+        } else builder.setPeriodic(MAX_JOB_INTERVAL)
 
         val info = builder.build()
         jobSheduler.schedule(info)
-    }
-
-    private fun <T> MutableLiveData<T>.observeOnce(observer: Observer<T>) {
-        observeForever(object : Observer<T> {
-            override fun onChanged(value: T) {
-                observer.onChanged(value)
-                removeObserver(this)
-            }
-        })
-    }
-
-    private fun searchViewClick(searchView: SearchView) {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        var productList = listOf<Product>()
-        var mypimeList = listOf<Proveedor>()
-        var tcpList = listOf<Proveedor>()
-
-        productosViewModel.productosList.observeOnce {
-            productList = it
-        }
-        proveedorViewModel.mypimeList.observeOnce {
-            mypimeList = it
-        }
-        proveedorViewModel.tcpList.observeOnce {
-            tcpList = it
-        }
-
-        val searchDelayMillis = 100L
-        var searchJob: Job? = null
-
-        val searchListener = object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                searchJob?.cancel()
-                Logger.i("xdestination: ${navController.currentDestination?.label}, proveedor: ${mypimeList.size}, producto: ${productList.size}")
-                searchJob = CoroutineScope(Dispatchers.Main).launch {
-                    delay(searchDelayMillis)
-                    when (navController.currentDestination?.id) {
-                        R.id.nav_productos -> {
-                            val newValue = productList.filter {
-                                it.nombre.contains(newText.orEmpty(), ignoreCase = true)
-                            }
-                            productosViewModel.productosList.postValue(newValue)
-
-                        }
-
-                        R.id.nav_mypimes -> {
-                            val newValue = mypimeList.filter {
-                                it.nombre.contains(newText.orEmpty(), ignoreCase = true)
-                            }
-                            proveedorViewModel.mypimeList.postValue(newValue)
-
-                        }
-
-                        R.id.nav_tcps -> {
-                            val newValue = tcpList.filter {
-                                it.nombre.contains(newText.orEmpty(), ignoreCase = true)
-                            }
-                            proveedorViewModel.tcpList.postValue(newValue)
-                        }
-
-
-                    }
-                }
-                return false
-            }
-        }
-
-        searchView.setOnQueryTextListener(searchListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -208,8 +118,9 @@ class MainActivity : AppCompatActivity() {
 
         val searchView = searchViewBinding.serachView
 
-        searchViewClick(searchView)
-
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val searchUseCase = SearchUseCase(navController, productosViewModel, proveedorViewModel)
+        searchUseCase.searchViewClick(searchView)
         return true
     }
 

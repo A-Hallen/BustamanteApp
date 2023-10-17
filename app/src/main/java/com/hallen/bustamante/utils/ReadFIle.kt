@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
 import java.io.File
+import java.util.Locale
 
 class ReadFIle {
 
@@ -18,13 +19,14 @@ class ReadFIle {
 
         try {
             context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             // Manejar la excepción si no se encuentra una aplicación para abrir el archivo
         }
     }
 
     private fun getMimeType(filePath: String): String {
-        val extension = filePath.substring(filePath.lastIndexOf(".") + 1).toLowerCase()
+        val extension = filePath.substring(filePath.lastIndexOf(".") + 1)
+            .lowercase(Locale.US)
 
         return when (extension) {
             "doc" -> "application/msword"

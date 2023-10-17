@@ -23,22 +23,4 @@ class ProductosViewModel @Inject constructor(
             productosList.postValue(productos)
         }
     }
-
-    suspend fun getProductsFromProviderId(id: String): List<Product> {
-        return productosUseCase.getProductsFromProviderId(id)
-    }
-
-//    fun getProductosFromApi() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val productos = productosUseCase.getAllProductsFromApi()
-//            productosList.postValue(productos)
-//        }
-//    }
-//
-//    fun insertProducts(proucto: Product) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            productosUseCase.insert(proucto)
-//        }
-//    }
-
 }

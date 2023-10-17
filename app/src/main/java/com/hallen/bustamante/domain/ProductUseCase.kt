@@ -36,20 +36,22 @@ class ProductUseCase @Inject constructor(
         productosDao.insertProducts(productos.map { it.toDataBase() })
     }
 
-    suspend fun insertUpdateTime(date: Date) {
+    fun insertUpdateTime(date: Date) {
         val entity = DateEntity("productos", date)
         dateDao.insert(entity)
     }
 
     suspend fun hasToUpdate(id: String): Boolean? {
         val serverDateString = ProductoService().getLastUpdateDate()
-        if (serverDateString.isEmpty()) return null
-        val localDate = dateDao.getLastUpdateDate(id) ?: return true
-        val serverDate = formato.parse(serverDateString) ?: return null
+        val serverDate = if (serverDateString.isNotBlank()) {
+            formato.parse(serverDateString)
+        } else return null
+        val localDate = dateDao.getLastUpdateDate(id)
         Logger.i("localDate: $localDate, serverDate: $serverDate")
-        return serverDate > localDate
+        return serverDate != null && serverDate > localDate
     }
 
     suspend fun getProductsFromProviderId(id: String): List<Product> =
         productosDao.getProductsFromProviderId(id).map { it.toDomain() }
 }
+

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/soft_white2"
+    android:background="@color/soft_color"
     android:transitionName="proveedor_transition"
     tools:context=".ui.tcps.ProveedorFullSizeFragment">
 

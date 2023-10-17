@@ -1,5 +1,6 @@
 package com.hallen.bustamante.utils
 
+import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -13,27 +14,40 @@ class ConvertirUrl {
         return decodedFileName.split("/").last()
     }
 
-
+    /**
+     * Invoke
+     *
+     * @param url La url original que se desea transformar.
+     * @param nombre El nombre opcional a agregar como parametro.
+     * @return la url transformada con el dominio reemplazado.
+     */
     operator fun invoke(url: String, nombre: String = getName(url)): String {
         try {
-            // Verificar si la URL comienza con "https://storage.googleapis.com/" o "https://firebasestorage.googleapis.com/"
-            if (url.startsWith("https://storage.googleapis.com/") ||
-                url.startsWith("https://firebasestorage.googleapis.com/")
-            ) {
-                // Reemplazar el segmento "ciertocitioweb.com" con "https://bustamante.onrender.com/"
-                val nuevaURL = url.replace("https://", "https://bustamante.onrender.com/")
-                if (nombre.isNotEmpty()) {
-                    return "$nuevaURL?filename=${URLEncoder.encode(nombre, "UTF-8")}"
-                }
-                return nuevaURL
-            } else {
-                // La URL no cumple con el formato esperado
-                throw IllegalArgumentException("URL no válida")
-            }
-        } catch (error: Throwable) {
+            return getUrl(url, nombre)
+        } catch (error: IllegalArgumentException) {
             println("Error al convertir la URL: ${error.message}, url: $url")
-            // Devolver la URL original en caso de error
-            return url
+        } catch (error: UnsupportedEncodingException) {
+            println("Error al convertir la URL: ${error.message}, url: $url")
         }
+        return url
+    }
+
+    /**
+     * Gets the transformed URL with the domain replaced.
+     *
+     * @param url The original URL to transform.
+     * @param nombre The optional name to add as a parameter.
+     * @return The transformed URL with the domain replaced.
+     * @throws IllegalArgumentException if the URL does not match the expected format.
+     */
+    private fun getUrl(url: String, nombre: String): String {
+        if (url.startsWith("https://storage.googleapis.com/") ||
+            url.startsWith("https://firebasestorage.googleapis.com/")
+        ) {
+            val nuevaURL = url.replace("https://", "https://bustamante.onrender.com/")
+            return if (nombre.isEmpty()) nuevaURL
+            else "$nuevaURL?filename=${URLEncoder.encode(nombre, "UTF-8")}"
+        }
+        throw IllegalArgumentException("Invalid URL")
     }
 }

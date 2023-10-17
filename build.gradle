@@ -13,7 +13,9 @@ plugins {
     id 'com.android.application' version '8.0.2' apply false
     id 'com.android.library' version '8.0.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.20' apply false
+    id "io.gitlab.arturbosch.detekt" version "1.23.1"
 }
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
@@ -21,7 +23,7 @@ allprojects {
     repositories {
         mavenCentral()
         google()
-        jcenter() // Warning: this repository is going to shut down soon
+        // jcenter() // Warning: this repository is going to shut down soon
         maven { url 'https://jitpack.io' }
     }
 }

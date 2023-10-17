@@ -6,133 +6,138 @@
     android:layout_weight="1"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/card"
-        android:background="@drawable/round_card_bg"
-        android:elevation="3dp"
+        android:backgroundTint="@color/cardview_bg"
+        app:cardCornerRadius="5dp"
         android:layout_marginVertical="7dp"
         android:layout_marginHorizontal="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:cropToPadding="true"
-            android:paddingHorizontal="5dp"
-            android:layout_marginBottom="2.5dp"
-            android:id="@+id/imagen"
-            tools:src="@drawable/test"
-            android:layout_width="match_parent"
-            android:scaleType="centerCrop"
-            android:layout_height="300dp"
-            app:layout_constraintBottom_toTopOf="@id/precios_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@string/producto" />
-
-        <LinearLayout
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/imagen"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/nombre"
-                tools:text="Ventanas"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/dark_black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/cantidad"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:maxWidth="100dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="U" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/data_layout"
-            android:layout_marginHorizontal="5dp"
-            android:paddingHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#83000000"
-            android:background="@color/white"
-            android:padding="15dp"
-            app:layout_constraintBottom_toBottomOf="@id/imagen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/proveedor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                tools:text="Brito" />
-
-            <TextView
-                android:id="@+id/precio"
-                tools:text="800"
-                android:gravity="end"
-                android:textColor="@color/white"
-                android:layout_gravity="center_vertical|end"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            tools:visibility="gone"
-            android:id="@+id/precios_layout"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/data_layout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="@string/mostrar_precios"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:id="@+id/text_precios"
-                android:background="@drawable/button_bg_load_more"
-                android:textSize="16sp"
-                android:layout_margin="10dp"
-                android:padding="7dp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ListView
-                android:id="@+id/table_list"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginBottom="10dp"
-                android:layout_marginHorizontal="10dp"
-                tools:listitem="@layout/item_tabla"
+            <ImageView
+                android:cropToPadding="true"
+                android:paddingHorizontal="5dp"
+                android:layout_marginBottom="2.5dp"
+                android:id="@+id/imagen"
+                tools:src="@drawable/test"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/mid_gray"
-                android:background="@drawable/round_card_bg"
-                android:padding="10dp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:scaleType="centerCrop"
+                android:layout_height="300dp"
+                app:layout_constraintBottom_toTopOf="@id/precios_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/producto" />
+
+            <LinearLayout
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/imagen"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nombre"
+                    tools:text="Ventanas"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textColor="@color/title_color"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/cantidad"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="100dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="U" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/data_layout"
+                android:layout_marginHorizontal="5dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/card_band_tint"
+                android:background="@color/colorOnPrimary"
+                android:padding="15dp"
+                app:layout_constraintBottom_toBottomOf="@id/imagen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/proveedor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_band_tint"
+                    android:textSize="17sp"
+                    tools:text="Brito" />
+
+                <TextView
+                    android:id="@+id/precio"
+                    tools:text="800"
+                    android:gravity="end"
+                    android:textColor="@color/text_band_tint"
+                    android:layout_gravity="center_vertical|end"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                tools:visibility="gone"
+                android:id="@+id/precios_layout"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@+id/data_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/mostrar_precios"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:id="@+id/text_precios"
+                    android:background="@drawable/button_bg_load_more"
+                    android:textSize="16sp"
+                    android:layout_margin="10dp"
+                    android:padding="7dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ListView
+                    android:id="@+id/table_list"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    tools:listitem="@layout/item_tabla"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/recyclerview_bg"
+                    android:background="@drawable/round_card_bg"
+                    android:padding="10dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

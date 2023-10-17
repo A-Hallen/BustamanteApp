@@ -12,7 +12,7 @@
         android:maxLines="2"
         android:ellipsize="end"
         tools:text="Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)tana (45x107)Ventana (45x107)Ventana (45x107)Ventana (45x107)"
-        android:textColor="@color/dark_black1"
+        android:textColor="@color/light_text_color"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:layout_width="0dp"
@@ -24,7 +24,7 @@
         tools:text="4600"
         android:maxLines="2"
         android:ellipsize="end"
-        android:textColor="@color/dark_black1"
+        android:textColor="@color/light_text_color"
         android:gravity="center_vertical|end"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
